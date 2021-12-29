@@ -3,12 +3,9 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { unixToDate, dateToUnix, rangeLengthInDays,  highestTradingVolume,
   bestDaysToBuyAndSell, bearishRunCalculator } from './utils/converters'
+import { StyledInput, StyledButton, Text, HeadingText,
+  Container, Heading, MainContainer, DataContainer } from './components/StyledComponents'
 
-
-
-const timeClick = (date) => {
-  dateToUnix(date)
-}
 
 // 5 minutes data only last day
 // hourly data 1-90
@@ -18,16 +15,17 @@ const timeClick = (date) => {
 
 const App = () => {
   const [bearishTrend, setBearishTrend] = useState(0)
-  const [tradingVolume, setTradingVolume] = useState([])
-  const [bestDays, setBestDays] = useState({})
+  const [tradingVolume, setTradingVolume] = useState(null)
+  const [bestDays, setBestDays] = useState(null)
   const [fromDate, setFromDate] = useState('')
-  const [fromTime, setFromTime] = useState('')
+  // const [fromTime, setFromTime] = useState('')
   const [toDate, setToDate] = useState('')
-  const [toTime, setToTime] = useState('')
+  // const [toTime, setToTime] = useState('')
   console.log('fromdAte', fromDate)
-  console.log('fromtime', fromTime)
+  // console.log('fromtime', fromTime)
   console.log('toDate', toDate)
-  console.log('toTime', toTime)// marginPercentage: (highest[1]/cheapest[1]),
+  // console.log('toTime', toTime)
+  // marginPercentage: (highest[1]/cheapest[1]),
 
   const getData = async (fromDate, toDate) => {
     const isToDate = true
@@ -64,20 +62,27 @@ const App = () => {
 
   return (
     <div>
-      <div>Hello Vincit</div>
-      <div>From</div>
-      <input type="date" onChange={(e) => setFromDate(e.target.value)}></input>
-      <input type="time" onChange={(e) => setFromTime(e.target.value)}></input>
-      <div>To</div>
-      <input type="date" onChange={(e) => setToDate(e.target.value)}></input>
-      <input type="time" onChange={(e) => setToTime(e.target.value)}></input>
-      <button onClick = {() => getData(fromDate, toDate)}> get data</button>
-      <button onClick = {() => timeClick(fromDate)}> convert timespamp</button>
-      <div>Longest bearish trend in days {bearishTrend}</div>
-      <div>Highest trading volume date {unixToDate(tradingVolume[0])} eur {tradingVolume[1]}</div>
-      <div>Best day to buy {unixToDate(bestDays.cheapest[0])} price {bestDays.cheapest[1]} </div>
-      <div>best day to sell {unixToDate(bestDays.highest[0])} price {bestDays.highest[1]} </div>
-
+      <Heading>
+        <HeadingText>Crypto Analyzer</HeadingText>
+      </Heading>
+      <MainContainer>
+        <Text>Choose date range to analyze Bitcoin</Text>
+        <Container>
+          <Container>
+            <StyledInput type="date" onChange={(e) => setFromDate(e.target.value)}></StyledInput>
+            {/* <StyledInput type="time" onChange={(e) => setFromTime(e.target.value)}></StyledInput> */}
+            <StyledInput type="date" onChange={(e) => setToDate(e.target.value)}></StyledInput>
+            {/* <input type="time" onChange={(e) => setToTime(e.target.value)}></input> */}
+            <StyledButton onClick = {() => getData(fromDate, toDate)}><Text>Get data</Text></StyledButton>
+          </Container>
+        </Container>
+        <DataContainer>
+          {bearishTrend && <Text>Longest bearish trend in days {bearishTrend}</Text>}
+          {tradingVolume&& <Text>Highest trading volume date {unixToDate(tradingVolume[0])} eur {tradingVolume[1]}</Text>}
+          {bestDays && <Text>Best day to buy {unixToDate(bestDays.cheapest[0])} price {bestDays.cheapest[1]} </Text>}
+          {bestDays && <Text>Best day to sell {unixToDate(bestDays.highest[0])} price {bestDays.highest[1]} </Text> }
+        </DataContainer>
+      </MainContainer>
     </div>
   )
 }
