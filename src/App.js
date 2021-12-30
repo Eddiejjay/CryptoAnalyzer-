@@ -53,7 +53,7 @@ const App = () => {
           </Container>
         </Container>
         <DataContainer>
-          {bearishTrend >= 0 && <Text>Longest bearish trend: {bearishTrend} days</Text>}
+          {bearishTrend  && <Text>Longest bearish trend: {bearishTrend} days</Text>}
           {tradingVolume && <Text>Highest trading volume date: {unixToDate(tradingVolume[0]).toDateString()} EUR: {tradingVolume[1]}</Text>}
           {bestDays && <Text>Best day to buy: {unixToDate(bestDays.cheapest[0]).toDateString()} Price EUR: {bestDays.cheapest[1]} </Text>}
           {bestDays && <Text>Best day to sell: {unixToDate(bestDays.highest[0]).toDateString()} Price EUR: {bestDays.highest[1]} </Text> }
