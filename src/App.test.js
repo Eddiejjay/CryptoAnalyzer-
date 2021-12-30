@@ -10,7 +10,7 @@ test('renders content', () => {
   )
 
   expect(component.container).toHaveTextContent(
-    'Hello Vincit'
+    'Crypto Analyzer'
   )
 })
 

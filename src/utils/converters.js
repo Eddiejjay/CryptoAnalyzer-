@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 export const unixToDate = (unix) => {
   const date = new Date(unix)
-  return date.toDateString()
+  return date
   // console.log(date.toLocaleDateString('en-GB'))
 
 }
@@ -97,4 +97,38 @@ export const bestDaysToBuyAndSell = (prices) => {
   console.log('besdays from calculator', bestDays)
   return bestDays
 
+}
+const getUTCDateHoursMinutes = (dateAndPrice) => {
+  const date = unixToDate(dateAndPrice[0]).getUTCDate()
+  const hours = unixToDate(dateAndPrice[0]).getUTCHours()
+  const minutes = unixToDate(dateAndPrice[0]).getUTCMinutes()
+  return { date, hours, minutes, dateAndPrice }
+}
+
+
+export const parseHourlyPricesToDailyPrices = (prices) => {
+
+  let dailyPrices = []
+  prices.reduce((dailyPrice, current, index, array) => {
+
+    const previousDHM = getUTCDateHoursMinutes((array[index-1]))
+    const currentDHM =  getUTCDateHoursMinutes((current))
+    const dailyPriceDHM = getUTCDateHoursMinutes((dailyPrice))
+
+    if (currentDHM.date !== previousDHM.date) {
+      dailyPrices.push(dailyPrice)
+      dailyPrice = current
+      if(index === array.length-1) {
+        dailyPrices.push(dailyPrice)
+      }
+    }
+    if (currentDHM.date === previousDHM.date){
+      if (currentDHM.hours < dailyPriceDHM.hours){
+        dailyPrice = current
+      }
+    }
+    return dailyPrice
+  })
+  console.log('dailyprices', dailyPrices)
+  return dailyPrices
 }

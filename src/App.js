@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { unixToDate, dateToUnix, rangeLengthInDays,  highestTradingVolume,
-  bestDaysToBuyAndSell, bearishRunCalculator } from './utils/converters'
+  bestDaysToBuyAndSell, bearishRunCalculator, parseHourlyPricesToDailyPrices } from './utils/converters'
 import { StyledInput, StyledButton, Text, HeadingText,
   Container, Heading, MainContainer, DataContainer } from './components/StyledComponents'
 
@@ -14,7 +14,7 @@ import { StyledInput, StyledButton, Text, HeadingText,
 
 
 const App = () => {
-  const [bearishTrend, setBearishTrend] = useState(0)
+  const [bearishTrend, setBearishTrend] = useState(null)
   const [tradingVolume, setTradingVolume] = useState(null)
   const [bestDays, setBestDays] = useState(null)
   const [fromDate, setFromDate] = useState('')
@@ -46,8 +46,15 @@ const App = () => {
 
   const dataParser = (rangeLength, data) => {
     console.log('ranfelegsh',rangeLength)
-    if (rangeLength >= 1 && rangeLength <= 90)
+    if (rangeLength >= 1 && rangeLength <= 90){
       console.log('dataparser 1-90', data.prices.length)
+      console.log('tyooyoyoyoyo')
+      const dailyPrices = parseHourlyPricesToDailyPrices(data.prices)
+      const dailyVolumes = parseHourlyPricesToDailyPrices(data.total_volumes)
+      setBearishTrend(bearishRunCalculator(dailyPrices))
+      setTradingVolume(highestTradingVolume(dailyVolumes))
+      setBestDays(bestDaysToBuyAndSell(dailyPrices))
+    }
     else if (rangeLength > 90){
       console.log('dataparser > 90', data.prices.length)
       setBearishTrend(bearishRunCalculator(data.prices))
@@ -78,9 +85,9 @@ const App = () => {
         </Container>
         <DataContainer>
           {bearishTrend && <Text>Longest bearish trend in days {bearishTrend}</Text>}
-          {tradingVolume&& <Text>Highest trading volume date {unixToDate(tradingVolume[0])} eur {tradingVolume[1]}</Text>}
-          {bestDays && <Text>Best day to buy {unixToDate(bestDays.cheapest[0])} price {bestDays.cheapest[1]} </Text>}
-          {bestDays && <Text>Best day to sell {unixToDate(bestDays.highest[0])} price {bestDays.highest[1]} </Text> }
+          {tradingVolume && <Text>Highest trading volume date {unixToDate(tradingVolume[0]).toDateString()} eur {tradingVolume[1]}</Text>}
+          {bestDays && <Text>Best day to buy {unixToDate(bestDays.cheapest[0]).toDateString()} price {bestDays.cheapest[1]} </Text>}
+          {bestDays && <Text>Best day to sell {unixToDate(bestDays.highest[0]).toDateString()} price {bestDays.highest[1]} </Text> }
         </DataContainer>
       </MainContainer>
     </div>
