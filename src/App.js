@@ -18,7 +18,7 @@ const App = () => {
     const from = dateToUnix(fromDate, isFromDate)
     const to = dateToUnix(toDate, isToDate)
     const rangeLength = rangeLengthInDays(to,from)
-    const data  = await getData(from,to)
+    const data  = await getData(from,to, 'EUR')
     dataParser(rangeLength, data)
   }
 
@@ -57,7 +57,7 @@ const App = () => {
           {tradingVolume && <Text>Highest trading volume date: {unixToDate(tradingVolume[0]).toDateString()} EUR: {tradingVolume[1]}</Text>}
           {bestDays && <Text>Best day to buy: {unixToDate(bestDays.cheapest[0]).toDateString()} Price EUR: {bestDays.cheapest[1]} </Text>}
           {bestDays && <Text>Best day to sell: {unixToDate(bestDays.highest[0]).toDateString()} Price EUR: {bestDays.highest[1]} </Text> }
-          {bestDays.cheapest[1] === bestDays.highest[1] && <Text style={{ color: 'red' }}>Price is only decreasing at this date range, there is no good day to buy and sell with profit</Text> }
+          {bestDays && bestDays.cheapest[1] === bestDays.highest[1] && <Text style={{ color: 'red' }}>Price is only decreasing at this date range, there is no good day to buy and sell with profit</Text> }
         </DataContainer>
       </MainContainer>
     </div>
