@@ -49,7 +49,7 @@ const App = () => {
           <Container>
             <StyledInput type="date" onChange={(e) => setFromDate(e.target.value)}></StyledInput>
             <StyledInput type="date" onChange={(e) => setToDate(e.target.value)}></StyledInput>
-            <StyledButton onClick = {() => getCoinData(fromDate, toDate)}><Text>Get data</Text></StyledButton>
+            <StyledButton onClick = {() => getCoinData(fromDate, toDate)}><Text>Start</Text></StyledButton>
           </Container>
         </Container>
         <DataContainer>
