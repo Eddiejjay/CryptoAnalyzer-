@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { unixToDate, dateToUnix, rangeLengthInDays,  highestTradingVolume,
-  bestDaysToBuyAndSell, bearishRunCalculator, parseHourlyPricesToDailyPrices } from './utils/tools'
+  bestDaysToBuyAndSell, bearishRunCalculator, parseHourlyValuesToDailyValues } from './utils/tools'
 import { StyledInput, StyledButton, Text, HeadingText,
   Container, Heading, MainContainer, DataContainer } from './components/StyledComponents'
 import { getData } from './services/CoinGeckoService'
@@ -24,8 +24,8 @@ const App = () => {
 
   const dataParser = (rangeLength, data) => {
     if (rangeLength >= 1 && rangeLength <= 90){
-      const dailyPrices = parseHourlyPricesToDailyPrices(data.prices)
-      const dailyVolumes = parseHourlyPricesToDailyPrices(data.total_volumes)
+      const dailyPrices = parseHourlyValuesToDailyValues(data.prices)
+      const dailyVolumes = parseHourlyValuesToDailyValues(data.total_volumes)
       setBearishTrend(bearishRunCalculator(dailyPrices))
       setTradingVolume(highestTradingVolume(dailyVolumes))
       setBestDays(bestDaysToBuyAndSell(dailyPrices))
@@ -53,7 +53,7 @@ const App = () => {
           </Container>
         </Container>
         <DataContainer>
-          {bearishTrend && <Text>Longest bearish trend: {bearishTrend} days</Text>}
+          {bearishTrend >= 0 && <Text>Longest bearish trend: {bearishTrend} days</Text>}
           {tradingVolume && <Text>Highest trading volume date: {unixToDate(tradingVolume[0]).toDateString()} EUR: {tradingVolume[1]}</Text>}
           {bestDays && <Text>Best day to buy: {unixToDate(bestDays.cheapest[0]).toDateString()} Price EUR: {bestDays.cheapest[1]} </Text>}
           {bestDays && <Text>Best day to sell: {unixToDate(bestDays.highest[0]).toDateString()} Price EUR: {bestDays.highest[1]} </Text> }

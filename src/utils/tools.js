@@ -88,32 +88,31 @@ export const bestDaysToBuyAndSell = (prices) => {
 
 }
 
-const getUTCDateHoursMinutes = (dateAndPrice) => {
+const getUTCDateHours = (dateAndPrice) => {
   const date = unixToDate(dateAndPrice[0]).getUTCDate()
   const hours = unixToDate(dateAndPrice[0]).getUTCHours()
-  const minutes = unixToDate(dateAndPrice[0]).getUTCMinutes()
-  return { date, hours, minutes, dateAndPrice }
+  return { date, hours, dateAndPrice }
 }
 
-export const parseHourlyPricesToDailyPrices = (prices) => {
-  let dailyPrices = []
-  prices.reduce((dailyPrice, current, index, array) => {
-    const previousDHM = getUTCDateHoursMinutes((array[index-1]))
-    const currentDHM =  getUTCDateHoursMinutes((current))
-    const dailyPriceDHM = getUTCDateHoursMinutes((dailyPrice))
-    if (currentDHM.date !== previousDHM.date) {
-      dailyPrices.push(dailyPrice)
-      dailyPrice = current
+export const parseHourlyValuesToDailyValues = (prices) => {
+  let dailyValues = []
+  prices.reduce((dailyValue, current, index, array) => {
+    const previousDH = getUTCDateHours((array[index-1]))
+    const currentDH =  getUTCDateHours((current))
+    const dailyValueDH = getUTCDateHours((dailyValue))
+    if (currentDH.date !== previousDH.date) {
+      dailyValues.push(dailyValue)
+      dailyValue = current
       if(index === array.length-1) {
-        dailyPrices.push(dailyPrice)
+        dailyValues.push(dailyValue)
       }
     }
-    if (currentDHM.date === previousDHM.date){
-      if (currentDHM.hours < dailyPriceDHM.hours){
-        dailyPrice = current
+    if (currentDH.date === previousDH.date){
+      if (currentDH.hours < dailyValueDH.hours){
+        dailyValue = current
       }
     }
-    return dailyPrice
+    return dailyValue
   })
-  return dailyPrices
+  return dailyValues
 }
