@@ -61,7 +61,7 @@ export const DataContainer = styled.div `
 box-sizing: content-box;
 margin: 75px;
 width: 1000x;
-height: 100px;
+height: 120px;
 display:flex;
 flex-direction: column;
 justify-content: center;

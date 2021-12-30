@@ -1,9 +1,7 @@
-/* eslint-disable no-console */
+
 export const unixToDate = (unix) => {
   const date = new Date(unix)
   return date
-  // console.log(date.toLocaleDateString('en-GB'))
-
 }
 
 export const dateToUnix = (date, isToDate) => {
@@ -33,7 +31,6 @@ export const bearishRunCalculator = (prices) => {
     }
     return first
   },0)
-  console.log('longest', longest)
   return longest
 }
 
@@ -44,10 +41,6 @@ export const highestTradingVolume = (volumes) => {
     }
     return largest
   })
-  // console.log('the real largest', largest)
-  const date = unixToDate(largest[0])
-  const eur = largest[1]
-  console.log('date',date, 'eur', eur)
   return largest
 }
 
@@ -79,7 +72,6 @@ export const bestDaysToBuyAndSell = (prices) => {
     if (current[1] < cheapest[1]) {
       const restPrices = prices.slice(index)
       const highest =  highestPrice(restPrices, cheapest)
-
       const log = {
         cheapest: current,
         highest: highest,
@@ -91,13 +83,11 @@ export const bestDaysToBuyAndSell = (prices) => {
     }
     return cheapest
   },initialValue)
-  console.log('dayStoCompare', daysToCompare)
-
   const bestDays = bestDaysFinder(daysToCompare)
-  console.log('besdays from calculator', bestDays)
   return bestDays
 
 }
+
 const getUTCDateHoursMinutes = (dateAndPrice) => {
   const date = unixToDate(dateAndPrice[0]).getUTCDate()
   const hours = unixToDate(dateAndPrice[0]).getUTCHours()
@@ -105,16 +95,12 @@ const getUTCDateHoursMinutes = (dateAndPrice) => {
   return { date, hours, minutes, dateAndPrice }
 }
 
-
 export const parseHourlyPricesToDailyPrices = (prices) => {
-
   let dailyPrices = []
   prices.reduce((dailyPrice, current, index, array) => {
-
     const previousDHM = getUTCDateHoursMinutes((array[index-1]))
     const currentDHM =  getUTCDateHoursMinutes((current))
     const dailyPriceDHM = getUTCDateHoursMinutes((dailyPrice))
-
     if (currentDHM.date !== previousDHM.date) {
       dailyPrices.push(dailyPrice)
       dailyPrice = current
@@ -129,6 +115,5 @@ export const parseHourlyPricesToDailyPrices = (prices) => {
     }
     return dailyPrice
   })
-  console.log('dailyprices', dailyPrices)
   return dailyPrices
 }
