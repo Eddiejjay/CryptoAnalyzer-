@@ -1,17 +1,23 @@
+/* eslint-disable no-console */
 
 export const unixToDate = (unix) => {
   const date = new Date(unix)
   return date
 }
 
-export const dateToUnix = (date, isToDate) => {
+export const dateToUnix = (date) => {
   const parts = date.split('-')
-  const unix = Date.UTC(Number(parts[0]), Number(parts[1])-1, Number(parts[2]), isToDate && 1)/1000
+  const unix = Date.UTC(Number(parts[0]), Number(parts[1])-1, Number(parts[2]))/1000
   return unix.toString()
 }
 
+export const addHourToUnix = (unix) =>  {
+  const addedUnix = Number(unix) + 3600
+
+  return addedUnix.toString()
+}
 export const rangeLengthInDays = (fromUnix, toUnix) => {
-  const rangeLength = Math.floor((fromUnix - toUnix)/86400)
+  const rangeLength = Math.floor((toUnix - fromUnix)/86400)
   return rangeLength
 }
 
@@ -88,7 +94,7 @@ export const bestDaysToBuyAndSell = (prices) => {
 
 }
 
-const getUTCDateHours = (dateAndPrice) => {
+export const getUTCDateHours = (dateAndPrice) => {
   const date = unixToDate(dateAndPrice[0]).getUTCDate()
   const hours = unixToDate(dateAndPrice[0]).getUTCHours()
   return { date, hours, dateAndPrice }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { unixToDate, dateToUnix, rangeLengthInDays,  highestTradingVolume,
-  bestDaysToBuyAndSell, bearishRunCalculator, parseHourlyValuesToDailyValues } from './utils/tools'
+  bestDaysToBuyAndSell, bearishRunCalculator, parseHourlyValuesToDailyValues, addHourToUnix } from './utils/tools'
 import { StyledInput, StyledButton, Text, HeadingText,
   Container, Heading, MainContainer, DataContainer } from './components/StyledComponents'
 import { getData } from './services/CoinGeckoService'
@@ -13,11 +13,9 @@ const App = () => {
   const [toDate, setToDate] = useState('')
 
   const getCoinData = async (fromDate, toDate) => {
-    const isToDate = true
-    const isFromDate = false
-    const from = dateToUnix(fromDate, isFromDate)
-    const to = dateToUnix(toDate, isToDate)
-    const rangeLength = rangeLengthInDays(to,from)
+    const from = dateToUnix(fromDate)
+    const to = addHourToUnix(dateToUnix(toDate))
+    const rangeLength = rangeLengthInDays(from,to)
     const data  = await getData(from,to, 'EUR')
     dataParser(rangeLength, data)
   }
