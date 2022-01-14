@@ -22,10 +22,7 @@ letter-spacing: 2px;
 word-spacing: 2px;
 color: #000000;
 font-weight: 400;
-text-decoration: none;
-font-style: normal;
-font-variant: normal;
-text-transform: none;`
+`
 export const StyledButton = styled.button `
 margin: 10px;
 padding:0x;
@@ -50,7 +47,6 @@ align-items: center;
 height: 80px;
 `
 export const DataContainer = styled.div `
-box-sizing: content-box;
 margin: 75px;
 width: 1000x;
 height: 120px;
@@ -67,7 +63,5 @@ letter-spacing: 2px;
 word-spacing: 2px;
 color: white;
 font-weight: 400;
-text-decoration: none;
-font-style: normal;
-font-variant: normal;
-text-transform: none;`
+`
+
