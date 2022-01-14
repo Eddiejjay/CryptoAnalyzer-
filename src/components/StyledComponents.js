@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-
 export const Container = styled.div `
 display:flex;
 flex-direction: row;
@@ -27,7 +26,6 @@ text-decoration: none;
 font-style: normal;
 font-variant: normal;
 text-transform: none;`
-
 export const StyledButton = styled.button `
 margin: 10px;
 padding:0x;
@@ -35,17 +33,14 @@ background: transparent;
 border: 5px groove rgba(20,20,20,0.17);
 &:hover {
   background: 	rgb(255,240,219,0.5)
-  
 }
 `
-
 export const StyledInput = styled.input`
 padding:6px;
 font-size: 15px;
 box-shadow: 0px 0px 5px rgba(66,66,66,.75);
    border: 5px groove rgba(20,20,20,0.17);
   }
-   
 `
 export const Heading = styled.nav`
 display: flex;
@@ -64,7 +59,6 @@ flex-direction: column;
 justify-content: center;
 overflow: auto;
 `
-
 export const HeadingText = styled.div `
 font-family: Arial, Helvetica, sans-serif;
 padding:5px;
@@ -77,4 +71,3 @@ text-decoration: none;
 font-style: normal;
 font-variant: normal;
 text-transform: none;`
-
