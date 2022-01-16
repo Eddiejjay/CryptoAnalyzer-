@@ -2,21 +2,25 @@ import React, { useState } from 'react'
 import { unixToDate, dateToUnix, rangeLengthInDays, highestValue,
   bestDaysToBuyAndSell, bearishRunCalculator, parseHourlyValuesToDailyValues, addHourToUnix } from './utils/tools'
 import { StyledInput, StyledButton, Text, HeadingText,
-  Container, Heading, MainContainer, DataContainer } from './components/StyledComponents'
+  Container, Heading, MainContainer, DataContainer, ErrorMessage } from './components/StyledComponents'
 import { getData } from './services/CoinGeckoService'
+
 const App = () => {
   const [bearishTrend, setBearishTrend] = useState(null)
   const [tradingVolume, setTradingVolume] = useState(null)
   const [bestDays, setBestDays] = useState(null)
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+
   const getCoinData = async (fromDate, toDate) => {
     const from = dateToUnix(fromDate)
     const to = addHourToUnix(dateToUnix(toDate))
     const rangeLength = rangeLengthInDays(from,to)
-    const data  = await getData(from,to, 'EUR')
+    const data  = await getData(from,to, 'EUR', setErrorMessage)
     dataParser(rangeLength, data)
   }
+
   const dataParser = (rangeLength, data) => {
     if (rangeLength >= 1 && rangeLength <= 90){
       const dailyPrices = parseHourlyValuesToDailyValues(data.prices)
@@ -30,6 +34,7 @@ const App = () => {
       setTradingVolume(highestValue(data.total_volumes))
       setBestDays(bestDaysToBuyAndSell(data.prices))
     }}
+
   return (
     <div>
       <Heading>
@@ -44,6 +49,7 @@ const App = () => {
             <StyledButton onClick = {() => getCoinData(fromDate, toDate)}><Text>Start</Text></StyledButton>
           </Container>
         </Container>
+        {errorMessage && <ErrorMessage><Text>{errorMessage}</Text></ErrorMessage>}
         <DataContainer>
           {bearishTrend  && <Text>Longest bearish trend: {bearishTrend} days</Text>}
           {tradingVolume && <Text>Highest trading volume date: {unixToDate(tradingVolume[0]).toDateString()} EUR: {tradingVolume[1]}</Text>}
@@ -55,4 +61,5 @@ const App = () => {
     </div>
   )
 }
+
 export default App
